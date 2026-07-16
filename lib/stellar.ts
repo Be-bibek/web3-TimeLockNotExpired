@@ -39,9 +39,9 @@ export async function fetchSwapQuote(sendAsset: SwapAsset, destAsset: SwapAsset,
   };
 }
 
-export async function executePathPaymentSwap(sendAsset: SwapAsset, destAsset: SwapAsset, amount: string, destAmount: string, walletKey: string) {
+export async function executePathPaymentSwap(walletKey: string, sendAsset: SwapAsset, destAsset: SwapAsset, amount: string, destAmount: string, path: any[]) {
   // Mock implementation for the Swap Widget UI
-  return "MOCK_SWAP_TX_HASH";
+  return { success: true, hash: "MOCK_SWAP_TX_HASH" };
 }
 
 export type ActivityRecord = {
