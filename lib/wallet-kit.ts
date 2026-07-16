@@ -5,14 +5,14 @@ import { WalletConnectModule } from '@creit.tech/stellar-wallets-kit/modules/wal
 
 export const WALLET_CONNECT_PROJECT_ID = 'b7327f1c1f6b3b55ceb96fa1a1170732'; // Generic demo ID
 
-let kit: StellarWalletsKit | null = null;
+let isInitialized = false;
 
 export function initWalletKit() {
-  if (typeof window === 'undefined') return null;
-  if (kit) return kit;
+  if (typeof window === 'undefined') return;
+  if (isInitialized) return;
   
   try {
-    kit = new StellarWalletsKit({
+    StellarWalletsKit.init({
       network: Networks.TESTNET,
       modules: [
         new FreighterModule(),
@@ -28,37 +28,25 @@ export function initWalletKit() {
         })
       ]
     });
+    isInitialized = true;
   } catch (e) {
     console.warn("Wallet kit init warning:", e);
   }
-  return kit;
 }
 
-export function openWalletModal() {
-  const k = initWalletKit();
-  if (!k) throw new Error("Wallet Kit not initialized");
-  return k.openModal({
-    onWalletSelected: async (option: any) => {
-      try {
-        k.setWallet(option.id);
-        const publicKey = await k.getPublicKey();
-        console.log("Selected wallet public key:", publicKey);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  });
+export async function openWalletModal() {
+  initWalletKit();
+  const res = await StellarWalletsKit.authModal();
+  return res;
 }
 
 export function disconnectWallet() {
-  const k = initWalletKit();
-  if (!k) return;
-  return k.disconnect();
+  initWalletKit();
+  return StellarWalletsKit.disconnect();
 }
 
 export async function signWalletKitTx(xdr: string, publicKey: string) {
-  const k = initWalletKit();
-  if (!k) throw new Error("Wallet Kit not initialized");
-  const result = await k.signTx({ xdr, publicKeys: [publicKey], network: Networks.TESTNET as any });
-  return result.signedXDR;
+  initWalletKit();
+  const result = await StellarWalletsKit.signTransaction(xdr, { address: publicKey, networkPassphrase: "Test SDF Network ; September 2015" });
+  return result.signedTxXdr;
 }

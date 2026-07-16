@@ -18,7 +18,7 @@ const config: Config = {
   },
   testMatch: ["**/__tests__/**/*.test.[jt]s?(x)"],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  setupFilesAfterFramework: ["@testing-library/jest-dom"],
+  setupFilesAfterEnv: ["@testing-library/jest-dom"],
   collectCoverageFrom: [
     "lib/**/*.{ts,tsx}",
     "store/**/*.{ts,tsx}",
