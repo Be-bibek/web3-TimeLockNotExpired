@@ -1,0 +1,30 @@
+import type { Config } from "jest";
+
+const config: Config = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1",
+  },
+  transform: {
+    "^.+\\.(ts|tsx)$": [
+      "ts-jest",
+      {
+        tsconfig: {
+          jsx: "react-jsx",
+        },
+      },
+    ],
+  },
+  testPathPattern: ["__tests__/.*\\.test\\.(ts|tsx)$"],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  setupFilesAfterFramework: ["@testing-library/jest-dom"],
+  collectCoverageFrom: [
+    "lib/**/*.{ts,tsx}",
+    "store/**/*.{ts,tsx}",
+    "!lib/wallet-kit.ts",
+    "!**/*.d.ts",
+  ],
+};
+
+export default config;
