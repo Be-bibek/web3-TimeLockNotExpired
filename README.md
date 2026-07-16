@@ -79,10 +79,6 @@ This is the **governance/authorization contract** (L3 Cross-Contract Architectur
 
 The complete end-to-end flow for a **Deposit** and a **Withdrawal**.
 
-![End-to-End Transaction Flow](elements/transaction-flow.svg)
-
-#### GitHub Native Mermaid Sequence Diagram
-
 ```mermaid
 sequenceDiagram
     participant User
@@ -121,10 +117,6 @@ The most critical piece of the L3 architecture: when `withdraw()` is called on t
 1. **The withdrawal rule is governed externally** — you can upgrade or replace the Policy contract without touching the Escrow.
 2. **Future extensibility** — the Policy could be replaced with a DAO vote, a multisig, or any other on-chain governance logic.
 3. **Security** — the Escrow never has unilateral control over withdrawals.
-
-![Cross-Contract Authorization Architecture](elements/cross-contract-auth.svg)
-
-#### GitHub Native Mermaid Architecture Flow
 
 ```mermaid
 graph LR
