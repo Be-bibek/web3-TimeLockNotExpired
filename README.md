@@ -56,54 +56,7 @@ This is the **main vault contract**. It stores the user's XLM balance and the ti
 | `#2` | `TimeLockNotExpired` | The time lock is still active — withdrawal blocked |
 | `#3` | `UnauthorizedPolicy` | The policy contract rejected the withdrawal |
 
-```svg
-<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;border-radius:12px;background:#0f1117">
-  <!-- Background -->
-  <rect width="700" height="300" fill="#0f1117" rx="12"/>
-  
-  <!-- Title -->
-  <text x="350" y="32" font-family="monospace" font-size="14" fill="#a78bfa" text-anchor="middle" font-weight="bold">ESCROW CONTRACT — CCQYG4...UCCR</text>
-
-  <!-- Contract Box -->
-  <rect x="200" y="55" width="300" height="200" rx="10" fill="#1e1b4b" stroke="#7c3aed" stroke-width="2"/>
-  <text x="350" y="78" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle">📦 Storage</text>
-  <rect x="220" y="85" width="260" height="50" rx="6" fill="#312e81"/>
-  <text x="350" y="104" font-family="monospace" font-size="10" fill="#e2e8f0" text-anchor="middle">balance: Map&lt;Address, i128&gt;</text>
-  <text x="350" y="122" font-family="monospace" font-size="10" fill="#e2e8f0" text-anchor="middle">unlock_time: Map&lt;Address, u64&gt;</text>
-
-  <!-- deposit function -->
-  <rect x="220" y="148" width="120" height="40" rx="6" fill="#065f46" stroke="#34d399" stroke-width="1.5"/>
-  <text x="280" y="165" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle" font-weight="bold">fn deposit()</text>
-  <text x="280" y="180" font-family="monospace" font-size="8" fill="#a7f3d0" text-anchor="middle">user, amount, unlock_time</text>
-
-  <!-- withdraw function -->
-  <rect x="360" y="148" width="120" height="40" rx="6" fill="#7f1d1d" stroke="#f87171" stroke-width="1.5"/>
-  <text x="420" y="165" font-family="monospace" font-size="9" fill="#f87171" text-anchor="middle" font-weight="bold">fn withdraw()</text>
-  <text x="420" y="180" font-family="monospace" font-size="8" fill="#fca5a5" text-anchor="middle">user, policy_addr</text>
-
-  <!-- Error codes -->
-  <text x="350" y="218" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">Errors: #1 InsufficientFunds</text>
-  <text x="350" y="232" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">#2 TimeLockNotExpired  #3 UnauthorizedPolicy</text>
-
-  <!-- Left arrow (User → deposit) -->
-  <line x1="40" y1="168" x2="195" y2="168" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="195,163 207,168 195,173" fill="#34d399"/>
-  <text x="20" y="150" font-family="monospace" font-size="10" fill="#34d399">User</text>
-  <text x="15" y="163" font-family="monospace" font-size="10" fill="#34d399">Wallet</text>
-
-  <!-- Right arrow (withdraw → Policy) -->
-  <line x1="507" y1="168" x2="640" y2="168" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="640,163 652,168 640,173" fill="#f59e0b"/>
-  <text x="648" y="155" font-family="monospace" font-size="10" fill="#f59e0b">Policy</text>
-  <text x="645" y="168" font-family="monospace" font-size="10" fill="#f59e0b">Contract</text>
-  <text x="645" y="181" font-family="monospace" font-size="10" fill="#f59e0b">↓</text>
-  <text x="636" y="194" font-family="monospace" font-size="10" fill="#f59e0b">is_auth()</text>
-
-  <!-- Network badge -->
-  <rect x="240" y="248" width="220" height="22" rx="6" fill="#1e293b"/>
-  <text x="350" y="263" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">🌐 Stellar Soroban Testnet</text>
-</svg>
-```
+![Escrow Contract Architecture](elements/escrow-contract.svg)
 
 ---
 
@@ -118,48 +71,7 @@ This is the **governance/authorization contract** (L3 Cross-Contract Architectur
 |---|---|---|
 | `is_auth(user)` | `Address` | Returns `true` if the caller is authorized to receive the withdrawal |
 
-```svg
-<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;border-radius:12px;background:#0f1117">
-  <!-- Background -->
-  <rect width="700" height="280" fill="#0f1117" rx="12"/>
-
-  <!-- Title -->
-  <text x="350" y="32" font-family="monospace" font-size="14" fill="#f59e0b" text-anchor="middle" font-weight="bold">POLICY CONTRACT — CCIHX5...U7VE</text>
-
-  <!-- Contract Box -->
-  <rect x="220" y="55" width="260" height="170" rx="10" fill="#1c1008" stroke="#d97706" stroke-width="2"/>
-  <text x="350" y="78" font-family="monospace" font-size="11" fill="#fbbf24" text-anchor="middle">🔑 Authorization Engine</text>
-
-  <!-- is_auth function -->
-  <rect x="245" y="90" width="210" height="50" rx="6" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
-  <text x="350" y="110" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle" font-weight="bold">fn is_auth(user: Address) → bool</text>
-  <text x="350" y="128" font-family="monospace" font-size="9" fill="#fde68a" text-anchor="middle">Validates caller is authorized</text>
-
-  <!-- Logic description -->
-  <rect x="245" y="152" width="210" height="60" rx="6" fill="#1e293b"/>
-  <text x="350" y="170" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">✅ Returns true → withdrawal proceeds</text>
-  <text x="350" y="185" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">❌ Returns false → Error(Contract, #3)</text>
-  <text x="350" y="200" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">Extendable: add DAO, multisig, etc.</text>
-
-  <!-- From Escrow Arrow -->
-  <line x1="40" y1="140" x2="215" y2="140" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="215,135 227,140 215,145" fill="#7c3aed"/>
-  <text x="5" y="128" font-family="monospace" font-size="10" fill="#a78bfa">Escrow</text>
-  <text x="2" y="141" font-family="monospace" font-size="10" fill="#a78bfa">Contract</text>
-  <text x="7" y="154" font-family="monospace" font-size="10" fill="#a78bfa">calls →</text>
-
-  <!-- To Escrow Result Arrow -->
-  <line x1="485" y1="140" x2="620" y2="140" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="620,135 632,140 620,145" fill="#34d399"/>
-  <text x="632" y="133" font-family="monospace" font-size="10" fill="#34d399">bool</text>
-  <text x="628" y="146" font-family="monospace" font-size="10" fill="#34d399">result</text>
-  <text x="625" y="159" font-family="monospace" font-size="10" fill="#34d399">→ back</text>
-
-  <!-- Network badge -->
-  <rect x="240" y="232" width="220" height="22" rx="6" fill="#1e293b"/>
-  <text x="350" y="247" font-family="monospace" font-size="9" fill="#64748b" text-anchor="middle">🌐 Stellar Soroban Testnet</text>
-</svg>
-```
+![Policy Contract Architecture](elements/policy-contract.svg)
 
 ---
 
@@ -167,139 +79,37 @@ This is the **governance/authorization contract** (L3 Cross-Contract Architectur
 
 The complete end-to-end flow for a **Deposit** and a **Withdrawal**.
 
-```svg
-<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;border-radius:12px;background:#0d1117">
-  <rect width="760" height="520" fill="#0d1117" rx="12"/>
+![End-to-End Transaction Flow](elements/transaction-flow.svg)
 
-  <!-- Title -->
-  <text x="380" y="30" font-family="monospace" font-size="15" fill="#e2e8f0" text-anchor="middle" font-weight="bold">End-to-End Transaction Flow</text>
+#### GitHub Native Mermaid Sequence Diagram
 
-  <!-- === ACTORS === -->
-  <!-- User -->
-  <rect x="20" y="55" width="90" height="36" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="65" y="78" font-family="monospace" font-size="11" fill="#e2e8f0" text-anchor="middle">👤 User</text>
-  <!-- Wallet Kit -->
-  <rect x="160" y="55" width="110" height="36" rx="8" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.5"/>
-  <text x="215" y="78" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle">🔌 Wallet Kit</text>
-  <!-- Frontend -->
-  <rect x="320" y="55" width="110" height="36" rx="8" fill="#0c2340" stroke="#3b82f6" stroke-width="1.5"/>
-  <text x="375" y="78" font-family="monospace" font-size="11" fill="#93c5fd" text-anchor="middle">⚡ Frontend</text>
-  <!-- Escrow -->
-  <rect x="480" y="55" width="115" height="36" rx="8" fill="#1e1b4b" stroke="#a855f7" stroke-width="1.5"/>
-  <text x="537" y="70" font-family="monospace" font-size="10" fill="#d8b4fe" text-anchor="middle">📦 Escrow</text>
-  <text x="537" y="84" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">Contract</text>
-  <!-- Policy -->
-  <rect x="635" y="55" width="110" height="36" rx="8" fill="#1c1008" stroke="#d97706" stroke-width="1.5"/>
-  <text x="690" y="70" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle">🔑 Policy</text>
-  <text x="690" y="84" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle">Contract</text>
+```mermaid
+sequenceDiagram
+    participant User
+    participant WalletKit
+    participant Frontend
+    participant EscrowContract
+    participant PolicyContract
 
-  <!-- Lifelines -->
-  <line x1="65" y1="91" x2="65" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
-  <line x1="215" y1="91" x2="215" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
-  <line x1="375" y1="91" x2="375" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
-  <line x1="537" y1="91" x2="537" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
-  <line x1="690" y1="91" x2="690" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+    Note over User, EscrowContract: ── DEPOSIT FLOW ──
+    User->>Frontend: Enter amount + lock duration
+    Frontend->>EscrowContract: simulateTransaction()
+    EscrowContract-->>Frontend: simulation result + fee
+    Frontend->>WalletKit: signTx(preparedXDR)
+    WalletKit->>User: Show signing prompt
+    User-->>WalletKit: ✅ User approves
+    WalletKit-->>Frontend: signedXDR
+    Frontend->>EscrowContract: sendTransaction() → deposit()
+    Note right of EscrowContract: Store balance + unlock_time
+    EscrowContract-->>Frontend: tx_hash ✅ Confirmed
 
-  <!-- === DEPOSIT FLOW === -->
-  <rect x="20" y="105" width="720" height="22" rx="4" fill="#064e3b" opacity="0.5"/>
-  <text x="380" y="121" font-family="monospace" font-size="11" fill="#34d399" text-anchor="middle" font-weight="bold">── DEPOSIT FLOW ──</text>
-
-  <!-- 1. User enters amount -->
-  <line x1="65" y1="145" x2="370" y2="145" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
-  <text x="215" y="140" font-family="monospace" font-size="9" fill="#60a5fa" text-anchor="middle">Enter amount + lock duration</text>
-
-  <!-- 2. Frontend builds tx -->
-  <line x1="375" y1="165" x2="532" y2="165" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
-  <text x="455" y="160" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">simulateTransaction()</text>
-
-  <!-- 3. RPC returns simulation -->
-  <line x1="532" y1="183" x2="375" y2="183" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-purple)"/>
-  <text x="455" y="178" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">simulation result + fee</text>
-
-  <!-- 4. Frontend asks user to sign -->
-  <line x1="375" y1="203" x2="220" y2="203" stroke="#c4b5fd" stroke-width="1.5" marker-end="url(#arrow-violet)"/>
-  <text x="298" y="198" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">signTx(preparedXDR)</text>
-
-  <!-- 5. Wallet Kit prompts user -->
-  <line x1="215" y1="223" x2="70" y2="223" stroke="#e879f9" stroke-width="1.5" marker-end="url(#arrow-pink)"/>
-  <text x="143" y="218" font-family="monospace" font-size="9" fill="#e879f9" text-anchor="middle">Show signing prompt</text>
-
-  <!-- 6. User approves -->
-  <line x1="65" y1="243" x2="210" y2="243" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-green)"/>
-  <text x="138" y="238" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">✅ User approves</text>
-
-  <!-- 7. Signed XDR returned -->
-  <line x1="215" y1="263" x2="370" y2="263" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-violet)"/>
-  <text x="292" y="258" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">signedXDR</text>
-
-  <!-- 8. Submit to network -->
-  <line x1="375" y1="283" x2="532" y2="283" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow-purple2)"/>
-  <text x="455" y="278" font-family="monospace" font-size="9" fill="#d8b4fe" text-anchor="middle" font-weight="bold">sendTransaction() → deposit()</text>
-
-  <!-- 9. Contract stores balance -->
-  <rect x="490" y="295" width="95" height="22" rx="4" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1"/>
-  <text x="537" y="310" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">Store balance + unlock_time</text>
-
-  <!-- Tx Hash back -->
-  <line x1="532" y1="325" x2="375" y2="325" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-green)"/>
-  <text x="455" y="320" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">tx_hash ✅ Confirmed</text>
-
-  <!-- === WITHDRAW FLOW === -->
-  <rect x="20" y="342" width="720" height="22" rx="4" fill="#7f1d1d" opacity="0.5"/>
-  <text x="380" y="358" font-family="monospace" font-size="11" fill="#f87171" text-anchor="middle" font-weight="bold">── WITHDRAWAL FLOW (after lock expires) ──</text>
-
-  <!-- 1. User clicks withdraw -->
-  <line x1="65" y1="382" x2="370" y2="382" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
-  <text x="215" y="377" font-family="monospace" font-size="9" fill="#60a5fa" text-anchor="middle">Click Withdraw button</text>
-
-  <!-- 2. withdraw() call -->
-  <line x1="375" y1="402" x2="532" y2="402" stroke="#f87171" stroke-width="2" marker-end="url(#arrow-red)"/>
-  <text x="455" y="397" font-family="monospace" font-size="9" fill="#f87171" text-anchor="middle" font-weight="bold">withdraw(user, policy_addr)</text>
-
-  <!-- 3. Escrow calls Policy -->
-  <line x1="537" y1="422" x2="685" y2="422" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
-  <text x="612" y="417" font-family="monospace" font-size="9" fill="#f59e0b" text-anchor="middle">is_auth(user)</text>
-
-  <!-- 4. Policy returns -->
-  <line x1="685" y1="442" x2="537" y2="442" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-amber)"/>
-  <text x="612" y="437" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle">true (authorized) ✅</text>
-
-  <!-- 5. Check time lock -->
-  <rect x="490" y="452" width="95" height="22" rx="4" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
-  <text x="537" y="467" font-family="monospace" font-size="9" fill="#fca5a5" text-anchor="middle">Check: now ≥ unlock_time?</text>
-
-  <!-- 6. Transfer funds -->
-  <line x1="532" y1="484" x2="375" y2="484" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-green)"/>
-  <text x="455" y="479" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle" font-weight="bold">Transfer XLM to user ✅</text>
-
-  <!-- Arrow Markers -->
-  <defs>
-    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#60a5fa"/>
-    </marker>
-    <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
-    </marker>
-    <marker id="arrow-purple2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#a855f7"/>
-    </marker>
-    <marker id="arrow-violet" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#c4b5fd"/>
-    </marker>
-    <marker id="arrow-pink" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#e879f9"/>
-    </marker>
-    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
-    </marker>
-    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#f87171"/>
-    </marker>
-    <marker id="arrow-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
-    </marker>
-  </defs>
-</svg>
+    Note over User, EscrowContract: ── WITHDRAWAL FLOW (after lock expires) ──
+    User->>Frontend: Click Withdraw button
+    Frontend->>EscrowContract: withdraw(user, policy_addr)
+    EscrowContract->>PolicyContract: is_auth(user)
+    PolicyContract-->>EscrowContract: true (authorized) ✅
+    Note right of EscrowContract: Check: now ≥ unlock_time?
+    EscrowContract-->>Frontend: Transfer XLM to user ✅
 ```
 
 ---
@@ -312,50 +122,22 @@ The most critical piece of the L3 architecture: when `withdraw()` is called on t
 2. **Future extensibility** — the Policy could be replaced with a DAO vote, a multisig, or any other on-chain governance logic.
 3. **Security** — the Escrow never has unilateral control over withdrawals.
 
-```svg
-<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;border-radius:12px;background:#0d1117">
-  <rect width="700" height="200" fill="#0d1117" rx="12"/>
-  <text x="350" y="30" font-family="monospace" font-size="13" fill="#e2e8f0" text-anchor="middle" font-weight="bold">Cross-Contract Authorization Architecture</text>
+![Cross-Contract Authorization Architecture](elements/cross-contract-auth.svg)
 
-  <!-- User box -->
-  <rect x="20" y="60" width="100" height="80" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
-  <text x="70" y="96" font-family="monospace" font-size="11" fill="#e2e8f0" text-anchor="middle">👤 User</text>
-  <text x="70" y="112" font-family="monospace" font-size="9" fill="#94a3b8" text-anchor="middle">Wallet</text>
+#### GitHub Native Mermaid Architecture Flow
 
-  <!-- Arrow User → Escrow -->
-  <line x1="120" y1="100" x2="238" y2="100" stroke="#60a5fa" stroke-width="2"/>
-  <polygon points="238,95 250,100 238,105" fill="#60a5fa"/>
-  <text x="182" y="93" font-family="monospace" font-size="9" fill="#60a5fa" text-anchor="middle">withdraw()</text>
-
-  <!-- Escrow box -->
-  <rect x="250" y="60" width="140" height="80" rx="8" fill="#1e1b4b" stroke="#7c3aed" stroke-width="2"/>
-  <text x="320" y="88" font-family="monospace" font-size="10" fill="#c4b5fd" text-anchor="middle">📦 Escrow</text>
-  <text x="320" y="103" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">CCQYG4...UCCR</text>
-  <rect x="265" y="112" width="110" height="18" rx="4" fill="#312e81"/>
-  <text x="320" y="125" font-family="monospace" font-size="8" fill="#e2e8f0" text-anchor="middle">check: now ≥ unlock_time</text>
-
-  <!-- Arrow Escrow → Policy -->
-  <line x1="390" y1="100" x2="498" y2="100" stroke="#f59e0b" stroke-width="2"/>
-  <polygon points="498,95 510,100 498,105" fill="#f59e0b"/>
-  <text x="447" y="93" font-family="monospace" font-size="9" fill="#f59e0b" text-anchor="middle">is_auth(user)</text>
-
-  <!-- Policy box -->
-  <rect x="510" y="60" width="160" height="80" rx="8" fill="#1c1008" stroke="#d97706" stroke-width="2"/>
-  <text x="590" y="88" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle">🔑 Policy</text>
-  <text x="590" y="103" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle">CCIHX5...U7VE</text>
-  <rect x="525" y="112" width="130" height="18" rx="4" fill="#78350f"/>
-  <text x="590" y="125" font-family="monospace" font-size="8" fill="#fde68a" text-anchor="middle">returns: true / false</text>
-
-  <!-- Return arrow Policy → Escrow -->
-  <line x1="510" y1="152" x2="395" y2="152" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="395,147 383,152 395,157" fill="#34d399"/>
-  <text x="450" y="168" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">true → release funds</text>
-
-  <!-- Return arrow Escrow → User -->
-  <line x1="250" y1="152" x2="125" y2="152" stroke="#34d399" stroke-width="1.5" stroke-dasharray="5,3"/>
-  <polygon points="125,147 113,152 125,157" fill="#34d399"/>
-  <text x="185" y="168" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">XLM transferred ✅</text>
-</svg>
+```mermaid
+graph LR
+    A[👤 User Wallet] -->|withdraw()| B
+    subgraph L2 Architecture
+        B[📦 Escrow Contract <br> CCQYG4...UCCR] 
+        C[🔑 Policy Contract <br> CCIHX5...U7VE]
+    end
+    B -->|is_auth(user)| C
+    C -.->|returns: true/false| B
+    B -.->|If true & unlock_time passed<br>XLM transferred ✅| A
+    style B fill:#1e1b4b,stroke:#7c3aed,stroke-width:2px,color:#c4b5fd
+    style C fill:#1c1008,stroke:#d97706,stroke-width:2px,color:#fcd34d
 ```
 
 ---

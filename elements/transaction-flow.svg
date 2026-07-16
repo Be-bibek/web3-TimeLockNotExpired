@@ -1,0 +1,132 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;border-radius:12px;background:#0d1117">
+  <rect width="760" height="520" fill="#0d1117" rx="12"/>
+
+  <!-- Title -->
+  <text x="380" y="30" font-family="monospace" font-size="15" fill="#e2e8f0" text-anchor="middle" font-weight="bold">End-to-End Transaction Flow</text>
+
+  <!-- === ACTORS === -->
+  <!-- User -->
+  <rect x="20" y="55" width="90" height="36" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="65" y="78" font-family="monospace" font-size="11" fill="#e2e8f0" text-anchor="middle">👤 User</text>
+  <!-- Wallet Kit -->
+  <rect x="160" y="55" width="110" height="36" rx="8" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="215" y="78" font-family="monospace" font-size="11" fill="#c4b5fd" text-anchor="middle">🔌 Wallet Kit</text>
+  <!-- Frontend -->
+  <rect x="320" y="55" width="110" height="36" rx="8" fill="#0c2340" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="375" y="78" font-family="monospace" font-size="11" fill="#93c5fd" text-anchor="middle">⚡ Frontend</text>
+  <!-- Escrow -->
+  <rect x="480" y="55" width="115" height="36" rx="8" fill="#1e1b4b" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="537" y="70" font-family="monospace" font-size="10" fill="#d8b4fe" text-anchor="middle">📦 Escrow</text>
+  <text x="537" y="84" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">Contract</text>
+  <!-- Policy -->
+  <rect x="635" y="55" width="110" height="36" rx="8" fill="#1c1008" stroke="#d97706" stroke-width="1.5"/>
+  <text x="690" y="70" font-family="monospace" font-size="10" fill="#fcd34d" text-anchor="middle">🔑 Policy</text>
+  <text x="690" y="84" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle">Contract</text>
+
+  <!-- Lifelines -->
+  <line x1="65" y1="91" x2="65" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="215" y1="91" x2="215" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="375" y1="91" x2="375" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="537" y1="91" x2="537" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="690" y1="91" x2="690" y2="510" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- === DEPOSIT FLOW === -->
+  <rect x="20" y="105" width="720" height="22" rx="4" fill="#064e3b" opacity="0.5"/>
+  <text x="380" y="121" font-family="monospace" font-size="11" fill="#34d399" text-anchor="middle" font-weight="bold">── DEPOSIT FLOW ──</text>
+
+  <!-- 1. User enters amount -->
+  <line x1="65" y1="145" x2="370" y2="145" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="215" y="140" font-family="monospace" font-size="9" fill="#60a5fa" text-anchor="middle">Enter amount + lock duration</text>
+
+  <!-- 2. Frontend builds tx -->
+  <line x1="375" y1="165" x2="532" y2="165" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <text x="455" y="160" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">simulateTransaction()</text>
+
+  <!-- 3. RPC returns simulation -->
+  <line x1="532" y1="183" x2="375" y2="183" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-purple)"/>
+  <text x="455" y="178" font-family="monospace" font-size="9" fill="#a78bfa" text-anchor="middle">simulation result + fee</text>
+
+  <!-- 4. Frontend asks user to sign -->
+  <line x1="375" y1="203" x2="220" y2="203" stroke="#c4b5fd" stroke-width="1.5" marker-end="url(#arrow-violet)"/>
+  <text x="298" y="198" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">signTx(preparedXDR)</text>
+
+  <!-- 5. Wallet Kit prompts user -->
+  <line x1="215" y1="223" x2="70" y2="223" stroke="#e879f9" stroke-width="1.5" marker-end="url(#arrow-pink)"/>
+  <text x="143" y="218" font-family="monospace" font-size="9" fill="#e879f9" text-anchor="middle">Show signing prompt</text>
+
+  <!-- 6. User approves -->
+  <line x1="65" y1="243" x2="210" y2="243" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="138" y="238" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">✅ User approves</text>
+
+  <!-- 7. Signed XDR returned -->
+  <line x1="215" y1="263" x2="370" y2="263" stroke="#c4b5fd" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-violet)"/>
+  <text x="292" y="258" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">signedXDR</text>
+
+  <!-- 8. Submit to network -->
+  <line x1="375" y1="283" x2="532" y2="283" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow-purple2)"/>
+  <text x="455" y="278" font-family="monospace" font-size="9" fill="#d8b4fe" text-anchor="middle" font-weight="bold">sendTransaction() → deposit()</text>
+
+  <!-- 9. Contract stores balance -->
+  <rect x="490" y="295" width="95" height="22" rx="4" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1"/>
+  <text x="537" y="310" font-family="monospace" font-size="9" fill="#c4b5fd" text-anchor="middle">Store balance + unlock_time</text>
+
+  <!-- Tx Hash back -->
+  <line x1="532" y1="325" x2="375" y2="325" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-green)"/>
+  <text x="455" y="320" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle">tx_hash ✅ Confirmed</text>
+
+  <!-- === WITHDRAW FLOW === -->
+  <rect x="20" y="342" width="720" height="22" rx="4" fill="#7f1d1d" opacity="0.5"/>
+  <text x="380" y="358" font-family="monospace" font-size="11" fill="#f87171" text-anchor="middle" font-weight="bold">── WITHDRAWAL FLOW (after lock expires) ──</text>
+
+  <!-- 1. User clicks withdraw -->
+  <line x1="65" y1="382" x2="370" y2="382" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-blue)"/>
+  <text x="215" y="377" font-family="monospace" font-size="9" fill="#60a5fa" text-anchor="middle">Click Withdraw button</text>
+
+  <!-- 2. withdraw() call -->
+  <line x1="375" y1="402" x2="532" y2="402" stroke="#f87171" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="455" y="397" font-family="monospace" font-size="9" fill="#f87171" text-anchor="middle" font-weight="bold">withdraw(user, policy_addr)</text>
+
+  <!-- 3. Escrow calls Policy -->
+  <line x1="537" y1="422" x2="685" y2="422" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+  <text x="612" y="417" font-family="monospace" font-size="9" fill="#f59e0b" text-anchor="middle">is_auth(user)</text>
+
+  <!-- 4. Policy returns -->
+  <line x1="685" y1="442" x2="537" y2="442" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrow-amber)"/>
+  <text x="612" y="437" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle">true (authorized) ✅</text>
+
+  <!-- 5. Check time lock -->
+  <rect x="490" y="452" width="95" height="22" rx="4" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
+  <text x="537" y="467" font-family="monospace" font-size="9" fill="#fca5a5" text-anchor="middle">Check: now ≥ unlock_time?</text>
+
+  <!-- 6. Transfer funds -->
+  <line x1="532" y1="484" x2="375" y2="484" stroke="#34d399" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="455" y="479" font-family="monospace" font-size="9" fill="#34d399" text-anchor="middle" font-weight="bold">Transfer XLM to user ✅</text>
+
+  <!-- Arrow Markers -->
+  <defs>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#60a5fa"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrow-purple2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrow-violet" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#c4b5fd"/>
+    </marker>
+    <marker id="arrow-pink" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e879f9"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+</svg>
