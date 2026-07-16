@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StellarFlow Time-Locked Escrow Vault
+
+StellarFlow Vault is a decentralized application (dApp) built on the Stellar network using Soroban smart contracts. It allows users to securely lock their XLM in a time-bound escrow contract that cannot be withdrawn by anyone (even the creator) until the specified time duration has passed. 
+
+This project demonstrates cross-contract authentication (L2/L3) and secure escrow management on the Stellar Testnet, featuring seamless Web3 mobile wallet support via WalletConnect.
+
+## Features
+
+- **Time-Locked Deposits**: Users can deposit testnet XLM and set a rigid time lock (e.g. 10 years).
+- **Immutable Security**: The smart contract enforces the time lock. Funds are completely unwithdrawable until the time lock expires.
+- **Cross-Contract Policy**: Implements an advanced L2/L3 policy contract that governs the withdrawal logic of the main escrow contract.
+- **Mobile-First Web3 Connection**: Fully integrated with `@creit.tech/stellar-wallets-kit` to allow desktop and mobile users to securely connect their wallets via Freighter, Albedo, or WalletConnect (e.g. xBull, Lobstr).
+- **Responsive UI**: Built with Next.js, Tailwind CSS, and Framer Motion for a stunning, smooth, micro-animated user experience.
+
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router), React, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion, Lucide React
+- **State Management**: Zustand
+- **Web3 / Blockchain**: 
+  - `@stellar/stellar-sdk` (v16) for RPC communication.
+  - `@creit.tech/stellar-wallets-kit` for versatile wallet connection and transaction signing.
+- **Network**: Stellar Soroban Testnet
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Be-bibek/web3-TimeLockNotExpired.git
+   cd web3-TimeLockNotExpired
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start the local development server:
+   ```bash
+   npm run dev
+   ```
 
-## Learn More
+4. Open your browser and navigate to `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+*Note for Mobile Testing: Because WalletConnect requires a secure context for its cryptographic functions (`window.crypto.subtle`), you must tunnel your local server via HTTPS to test on a mobile device (e.g., using `npx localtunnel --port 3000` or `npx ngrok http 3000`), or deploy the application to Vercel.*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Smart Contract Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The dApp communicates with two Soroban smart contracts on the Testnet:
+1. **Escrow Contract**: Manages the locked balances and timestamps.
+2. **Policy Contract**: Authorizes or rejects withdrawals based on custom cross-contract governance rules.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+These contracts ensure that neither the user nor malicious actors can bypass the time lock.
