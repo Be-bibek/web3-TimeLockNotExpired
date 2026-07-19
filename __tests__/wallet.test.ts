@@ -1,5 +1,12 @@
 import { useWalletStore } from "../store/useWalletStore"
 
+jest.mock("../lib/wallet-kit", () => ({
+  openWalletModal: jest.fn(),
+  disconnectWallet: jest.fn(),
+  signWalletKitTx: jest.fn(),
+  initWalletKit: jest.fn()
+}))
+
 describe("Wallet Store", () => {
   it("should initialize with null address", () => {
     const state = useWalletStore.getState()
