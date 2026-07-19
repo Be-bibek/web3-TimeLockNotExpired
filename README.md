@@ -6,6 +6,12 @@
 [![Network](https://img.shields.io/badge/Network-Stellar%20Testnet-blue)](https://testnet.steexp.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
+### Dashboard Screenshot
+![Treasury Dashboard](./assets/dashboard.png)
+
+### Escrow Vault Screenshot
+![Time-Locked Escrow Vault](./assets/vault.png)
+
 ---
 
 ## 📋 Table of Contents
