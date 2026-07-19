@@ -126,14 +126,14 @@ The most critical piece of the L3 architecture: when `withdraw()` is called on t
 
 ```mermaid
 graph LR
-    A[👤 User Wallet] -->|withdraw()| B
-    subgraph L2 Architecture
-        B[📦 Escrow Contract <br> CCQYG4...UCCR] 
-        C[🔑 Policy Contract <br> CCIHX5...U7VE]
+    A["👤 User Wallet"] -->|"withdraw()"| B
+    subgraph L2 ["L2 Architecture"]
+        B["📦 Escrow Contract <br> CCQYG4...UCCR"] 
+        C["🔑 Policy Contract <br> CCIHX5...U7VE"]
     end
-    B -->|is_auth(user)| C
-    C -.->|returns: true/false| B
-    B -.->|If true & unlock_time passed<br>XLM transferred ✅| A
+    B -->|"is_auth(user)"| C
+    C -.->|"returns: true/false"| B
+    B -.->|"If true & unlock_time passed<br>XLM transferred ✅"| A
     style B fill:#1e1b4b,stroke:#7c3aed,stroke-width:2px,color:#c4b5fd
     style C fill:#1c1008,stroke:#d97706,stroke-width:2px,color:#fcd34d
 ```
